@@ -1,0 +1,7 @@
+<resources>
+
+    <style name="Theme.Dietethereumandroid" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/black</item>
+    </style>
+
+</resources>
