@@ -1,23 +1,34 @@
 package nl.labela.dietethereumandroid.di
 
-import nl.labela.dietethereumandroid.ui.screens.HomeViewModel
-import org.koin.androidx.experimental.dsl.viewModel
-import org.koin.dsl.module
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import nl.labela.dietethereumandroid.data.EthereumRepository
+import nl.labela.dietethereumandroid.data.dataStore
+import javax.inject.Singleton
 
-val viewModelModule = module {
-    viewModel<HomeViewModel>()
+@InstallIn(SingletonComponent::class)
+@Module
+class AppModule {
+
+    @Singleton
+    @Provides
+    fun providesDataStore(@ApplicationContext applicationContext: Context): DataStore<Preferences> {
+        return applicationContext.dataStore
+    }
+
+    @Singleton
+    @Provides
+    fun providesEthereumRepository(
+        @ApplicationContext applicationContext: Context,
+        dataStore: DataStore<Preferences>
+    ): EthereumRepository {
+        return EthereumRepository(applicationContext, dataStore)
+    }
+
 }
-
-val repositoryModule = module {
-//    single<MainRepository>()
-}
-
-val apiModule = module {
-//    single<Api>()
-}
-
-val appModules = listOf(
-    viewModelModule,
-    repositoryModule,
-    apiModule
-)
